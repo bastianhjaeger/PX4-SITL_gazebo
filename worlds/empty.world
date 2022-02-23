@@ -1,6 +1,15 @@
 <?xml version="1.0" ?>
 <sdf version="1.5">
   <world name="default">
+    <scene>
+      <sky>
+        <time>16</time>
+      </sky>
+      <ambient>0.4 0.4 0.4 1</ambient>
+      <background>0.7 0.7 0.7 1</background>
+      <shadows>1</shadows>
+    </scene>
+
     <!-- A global light source -->
     <include>
       <uri>model://sun</uri>
