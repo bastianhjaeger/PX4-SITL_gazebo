@@ -28,7 +28,11 @@
         <sensor name="depth_camera" type="depth">
           <always_on>0</always_on>
           <update_rate>30</update_rate>
+          {%- if mavlink_id != '-1' %}
           <camera name="camera_name">
+          {%- else %}
+          <camera name="camera_name">
+          {%- endif %}
             <horizontal_fov>1.5009831567</horizontal_fov>
             <image>
               <format>R8G8B8</format>
@@ -50,10 +54,14 @@
           </camera>
           <plugin name="camera_controller" filename="libgazebo_ros_camera.so">
             <camera_name>camera</camera_name>
-            <frame_name>fmu1/camera_link</frame_name>
+            {%- if mavlink_id != '-1' %}
+            <frame_name>fmu{{ mavlink_id }}/camera_link</frame_name>
             <ros>
-              <namespace>fmu1</namespace>
+              <namespace>fmu{{ mavlink_id }}</namespace>
             </ros>
+            {%- else %}
+            <frame_name>camera_link</frame_name>
+            {%- endif %}
             <hack_baseline>0.07</hack_baseline>
             <min_depth>0.5</min_depth>
             <max_depth>24</max_depth>
@@ -522,16 +530,16 @@
       <magSubTopic>/mag</magSubTopic>
       <baroSubTopic>/baro</baroSubTopic>
       <mavlink_addr>INADDR_ANY</mavlink_addr>
-      <mavlink_tcp_port>4560</mavlink_tcp_port>
-      <mavlink_udp_port>14560</mavlink_udp_port>
-      <serialEnabled>0</serialEnabled>
-      <serialDevice>/dev/ttyACM0</serialDevice>
-      <baudRate>921600</baudRate>
+      <mavlink_tcp_port>{{ mavlink_tcp_port }}</mavlink_tcp_port>
+      <mavlink_udp_port>{{ mavlink_udp_port }}</mavlink_udp_port>
+      <serialEnabled>{{ serial_enabled }}</serialEnabled>
+      <serialDevice>{{ serial_device }}</serialDevice>
+      <baudRate>{{ serial_baudrate }}</baudRate>
       <qgc_addr>INADDR_ANY</qgc_addr>
       <qgc_udp_port>14550</qgc_udp_port>
       <sdk_addr>INADDR_ANY</sdk_addr>
       <sdk_udp_port>14540</sdk_udp_port>
-      <hil_mode>0</hil_mode>
+      <hil_mode>{{ hil_mode }}</hil_mode>
       <hil_state_level>0</hil_state_level>
       <send_vision_estimation>0</send_vision_estimation>
       <send_odometry>1</send_odometry>
